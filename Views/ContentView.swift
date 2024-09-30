@@ -6,24 +6,29 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
-    @State private var selection: Tab = .nowSaving
-    var savings: [Saving] = [Saving(name: "macbook air", goal: 1500000, imageName: "ipadair13"), Saving(name: "ipad air", goal: 1000000, imageName: "ipadair13"), Saving(name: "iPhone", goal: 1200000, imageName: "ipadair13")]
+    @State private var selection: Tab = .now
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \Saving.startDate, order: .reverse) private var savings: [Saving]
     
     enum Tab {
-        case nowSaving
+        case now
         case list
-        case settings
+        case more
     }
     
     var body: some View {
+        
+        let saving: Saving? = savings.first
+        
         TabView(selection: $selection) {
-            NowSaving(saving: savings[0])
+            NowSaving(saving: saving)
                 .tabItem {
                     Label("Now Saving", systemImage: "square.and.arrow.down")
                 }
-                .tag(Tab.nowSaving)
+                .tag(Tab.now)
             
             SavingList(savings: savings)
                 .tabItem {
@@ -35,11 +40,13 @@ struct ContentView: View {
                 .tabItem {
                     Label("More", systemImage: "ellipsis")
                 }
-                .tag(Tab.list)
+                .tag(Tab.more)
         }
     }
 }
 
 #Preview {
-    ContentView()
+    ModelContainerPreview(ModelContainer.sample) {
+        ContentView()
+    }
 }

@@ -9,27 +9,27 @@ import SwiftUI
 import SwiftData
 
 struct SavingList: View {
-    //@Query(sort: \Saving.startDate, order: .reverse) private var savings: [Saving]
-    var savings: [Saving]
+    @Environment(\.modelContext) private var modelContext
     @State private var isStartingPhase = false
+    var savings: [Saving]?
     
     var body: some View {
-        NavigationSplitView {
-            List(savings) { saving in
-                NavigationLink {
-                    SavingDetail(saving: saving)
-                } label: {
-                    SavingRow(saving: saving)
+        if savings != nil {
+            NavigationSplitView {
+                List(savings!) { saving in
+                    NavigationLink {
+                        SavingDetail(saving: saving)
+                    } label: {
+                        SavingRow(saving: saving)
+                    }
+                    .listRowInsets(EdgeInsets())
                 }
-                .tag(saving)
+                .navigationTitle("My Savings")
+            } detail: {
+                Text("Select a saving")
             }
-            .navigationTitle("My Savings")
-        } detail: {
-            Text("Select a saving")
+        } else {
+            //StartSavingView()
         }
     }
-}
-
-#Preview {
-    SavingList(savings: [Saving(name: "macbook air", goal: 1500000, imageName: "ipadair13"), Saving(name: "ipad air", goal: 1000000, imageName: "ipadair13"), Saving(name: "iPhone", goal: 1200000, imageName: "ipadair13"), Saving(name: "macbook air", goal: 1500000, imageName: "ipadair13"), Saving(name: "ipad air", goal: 1000000, imageName: "ipadair13"), Saving(name: "iPhone", goal: 1200000, imageName: "ipadair13")])
 }

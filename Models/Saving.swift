@@ -12,13 +12,12 @@ import SwiftData
 final class Saving {
     @Attribute(.unique) var name: String
     var goal: Int
-    var current: Int = 0
     var startDate = Date()
     var isFinished = false
     var finishDate: Date?
     var imageName: String
     @Relationship(deleteRule: .cascade, inverse: \Record.account)
-    var history = [Record]()
+    var records = [Record]()
     
     init(name: String, goal: Int, imageName: String) {
         self.name = name

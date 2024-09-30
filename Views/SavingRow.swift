@@ -5,23 +5,24 @@
 //  Created by 김세령 on 9/26/24.
 //
 
+import Foundation
 import SwiftUI
 
 struct SavingRow: View {
     var saving: Saving
+    var current: Int = 2000
     
     var body: some View {
         ZStack {
             Image(saving.imageName)
                 .resizable()
-                .scaledToFit()
+                .frame(height: 300)
                 .overlay (
                     Gradient(colors: [.black.opacity(0.3)])
                 )
-                .clipShape(Circle())
-                //.clipShape(RoundedRectangle(cornerRadius: 10))
+                
             VStack {
-                Text("\(saving.current)")
+                Text("\(saving.records.map { $0.amount }.reduce(0, +))")
                     .bold()
                     .font(.title)
                 Text("From " + saving.startDate.formatted(date: .abbreviated, time: .omitted))

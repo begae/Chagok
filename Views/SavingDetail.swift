@@ -52,41 +52,33 @@ private struct SavingDetailContentView: View {
 
     var body: some View {
         List {
+            
             HStack {
-                Text("Created at")
+                Text("Started on")
                 Spacer()
                 Text(saving.startDate.formatted(date: .complete, time: .omitted)).bold()
             }
             HStack {
                 Text("Current amount")
                 Spacer()
-                Text("\(saving.current)").bold()
+                Text("\(saving.records.map { $0.amount }.reduce(0, +))").bold()
             }
             HStack {
                 Text("Goal amount")
                 Spacer()
                 Text("\(saving.goal)").bold()
             }
+            
             Image(saving.imageName)
                 .resizable()
                 .scaledToFit()
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-         
-            ForEach(saving.history) { record in
+                .listRowInsets(EdgeInsets())
+            
+            ForEach(saving.records) { record in
                 HStack {
-                    Text("Goal Amount")
+                    Text(record.date.formatted(date: .abbreviated, time: .omitted))
                     Spacer()
                     Text("\(record.amount)").bold()
-                }
-                HStack {
-                    Text("Goal Amount")
-                    Spacer()
-                    Text("\(saving.goal)").bold()
-                }
-                HStack {
-                    Text("Goal Amount")
-                    Spacer()
-                    Text("\(saving.goal)").bold()
                 }
             }
         }
