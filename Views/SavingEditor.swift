@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct SavingEditor: View {
-    var saving: Saving
+    var saving: Saving?
+    
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }

@@ -11,23 +11,40 @@ import SwiftData
 struct NowSaving: View {
     var saving: Saving?
     @Environment(\.modelContext) private var modelContext
-    @State private var isEditorPresented = false
-
+    @State private var isRecordEditorPresented = false
+    @State private var isSavingEditorPresented = false
+    
     var body: some View {
+        
         if saving == nil {
-            
-            //StartSavingView()
-            ContentUnavailableView("Start saving", systemImage: "dollarsign")
+            VStack {
+                HStack {
+                    Text("Chagok")
+                        .bold()
+                        .font(.largeTitle)
+                    Spacer()
+                }
+                .padding()
+                ContentUnavailableView {
+                    Label("Not quite saving at the moment", systemImage: "dollarsign")
+                } description: {
+                    StartSavingButton(isActive: $isSavingEditorPresented)
+                        .sheet(isPresented: $isSavingEditorPresented) {
+                            SavingEditor(saving: nil)
+                        }
+                }
+            }
         } else {
-            
             let current = saving!.records.map { $0.amount }.reduce(0, +)
             
             VStack {
-                Text("Chagok")
-                    .bold()
-                    .font(.largeTitle)
-                    .padding(.init(top: 50, leading: 0, bottom: 20, trailing: 0))
-                
+                HStack {
+                    Text("Chagok")
+                        .bold()
+                        .font(.largeTitle)
+                    Spacer()
+                }
+                .padding()
                 Image(saving!.imageName)
                     .resizable()
                     .scaledToFit()
@@ -47,31 +64,17 @@ struct NowSaving: View {
                                     .font(.title2)
                             }
                             Spacer()
+                            AddRecordButton(isActive: $isRecordEditorPresented)
+                                .sheet(isPresented: $isRecordEditorPresented) {
+                                    RecordEditor(saving: saving!)
+                                }
                         }
-                        .padding()
                     }
-                
-                AddRecordButton(isActive: $isEditorPresented)
             }
         }
     }
 }
 
-private struct AddRecordButton: View {
-    @Binding var isActive: Bool
-    
-    var body: some View {
-        Button {
-            isActive = true
-        } label: {
-            Label("Save some more", systemImage: "plus")
-                .help("Add a saving record")
-        }
-        .foregroundStyle(.black)
-        .font(.title3).bold()
-        .padding(.init(.init(top: 10, leading: 0, bottom: 30, trailing: 0)))
-    }
-}
     
 #Preview {
     ModelContainerPreview(ModelContainer.sample) {

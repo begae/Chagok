@@ -10,26 +10,35 @@ import SwiftData
 
 struct SavingList: View {
     @Environment(\.modelContext) private var modelContext
-    @State private var isStartingPhase = false
-    var savings: [Saving]?
+    @State private var isEditorPresented = false
+    var savings: [Saving]
     
     var body: some View {
-        if savings != nil {
-            NavigationSplitView {
-                List(savings!) { saving in
-                    NavigationLink {
-                        SavingDetail(saving: saving)
-                    } label: {
-                        SavingRow(saving: saving)
-                    }
-                    .listRowInsets(EdgeInsets())
+        
+        NavigationSplitView {
+            List(savings) { saving in
+                NavigationLink {
+                    SavingDetail(saving: saving)
+                } label: {
+                    SavingRow(saving: saving)
                 }
-                .navigationTitle("My Savings")
-            } detail: {
-                Text("Select a saving")
+                .listRowInsets(EdgeInsets())
             }
-        } else {
-            //StartSavingView()
+            .sheet(isPresented: $isEditorPresented) {
+                SavingEditor(saving: nil)
+            }
+            .navigationTitle("My Savings")
+            .overlay {
+                if savings.isEmpty {
+                    ContentUnavailableView {
+                        Label("No savings in your list", systemImage: "wonsign")
+                    } description: {
+                        StartSavingButton(isActive: $isEditorPresented)
+                    }
+                }
+            }
+        } detail: {
+            Text("Select a saving")
         }
     }
 }
