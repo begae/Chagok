@@ -36,6 +36,7 @@ struct NowSaving: View {
             }
         } else {
             let current = saving!.records.map { $0.amount }.reduce(0, +)
+            let status = 0.8 - Double(current / saving!.goal)
             
             VStack {
                 HStack {
@@ -49,7 +50,7 @@ struct NowSaving: View {
                     .resizable()
                     .scaledToFit()
                     .overlay (
-                        LinearGradient(colors: [.white.opacity(1), .white.opacity(0)], startPoint: .top, endPoint: .bottom)
+                        LinearGradient(colors: [.white.opacity(1), .white.opacity(status)], startPoint: .top, endPoint: .center)
                     )
                     .overlay {
                         VStack {
@@ -64,12 +65,19 @@ struct NowSaving: View {
                                     .font(.title2)
                             }
                             Spacer()
-                            AddRecordButton(isActive: $isRecordEditorPresented)
-                                .sheet(isPresented: $isRecordEditorPresented) {
-                                    RecordEditor(saving: saving!)
-                                }
                         }
+                        .padding()
                     }
+                HStack {
+                    AddRecordButton(isActive: $isRecordEditorPresented)
+                        .sheet(isPresented: $isRecordEditorPresented) {
+                            RecordEditor(saving: saving!)
+                        }
+                        .labelStyle(.titleOnly)
+                        .foregroundStyle(.black)
+                        .font(.title2)
+                }
+                .padding()
             }
         }
     }
@@ -78,6 +86,6 @@ struct NowSaving: View {
     
 #Preview {
     ModelContainerPreview(ModelContainer.sample) {
-        NowSaving(saving: Saving.macbook)
+        NowSaving(saving: Saving.travel)
     }
 }

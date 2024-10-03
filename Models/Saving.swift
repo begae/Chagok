@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 final class Saving {
-    @Attribute(.unique) var name: String
+    var name: String
     var goal: Int
     var startDate = Date()
     var isFinished = false

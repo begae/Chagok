@@ -14,8 +14,8 @@ struct StartSavingButton: View {
         Button {
             isActive = true
         } label: {
-            Label("Start saving", systemImage: "plus")
-                .help("Edit a saving tracker")
+            Label("Start saving", systemImage: "folder.badge.plus")
+                .help("Start tracking your saving")
         }
     }
 }
@@ -27,10 +27,8 @@ struct AddRecordButton: View {
         Button {
             isActive = true
         } label: {
-            Label("Save some more", systemImage: "plus")
+            Label("Add record", systemImage: "document.badge.plus")
+                .help("Save more to have it clearer")
         }
-        .foregroundStyle(.white)
-        .font(.title3).bold()
-        .padding()
     }
 }
