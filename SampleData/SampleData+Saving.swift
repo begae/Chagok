@@ -9,10 +9,10 @@ import Foundation
 import SwiftData
 
 extension Saving {
-    static let macbook = Saving(name: "MacBook Pro M1 16\"", goal: 1500000, imageName: "macbook")
-    static let ipad = Saving(name: "iPad Air M2 13\"", goal: 1200000, imageName: "ipadair13")
-    static let iphone = Saving(name: "iPhone 16 Plus", goal: 1400000, imageName: "iphone")
-    static let travel = Saving(name: "Trip to Belgium", goal: 3000000, imageName: "belgium")
+    static let macbook = Saving(name: "MacBook Pro M1 16\"", goal: 1500000)
+    static let ipad = Saving(name: "iPad Air M2 13\"", goal: 1200000)
+    static let iphone = Saving(name: "iPhone 16 Plus", goal: 1400000)
+    static let travel = Saving(name: "Trip to Belgium", goal: 3000000)
     
     static func insertSampleData(modelContext: ModelContext) {
         

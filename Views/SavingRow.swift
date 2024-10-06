@@ -13,8 +13,12 @@ struct SavingRow: View {
     var current: Int = 2000
     
     var body: some View {
+        let image = saving.cover != nil ?
+                    Image(uiImage: UIImage(data: saving.cover!)!) :
+                    Image("piggy-bank")
+        
         ZStack {
-            Image(saving.imageName)
+            image
                 .resizable()
                 .frame(height: 300)
                 .overlay (
@@ -37,5 +41,5 @@ struct SavingRow: View {
 }
 
 #Preview {
-    SavingRow(saving: Saving(name: "iPad air 13", goal: 1200000, imageName: "ipadair13"))
+    SavingRow(saving: Saving(name: "iPad air 13", goal: 1200000))
 }

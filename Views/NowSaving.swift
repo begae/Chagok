@@ -37,6 +37,9 @@ struct NowSaving: View {
         } else {
             let current = saving!.records.map { $0.amount }.reduce(0, +)
             let status = 0.8 - Double(current / saving!.goal)
+            let image = saving!.cover != nil ?
+                        Image(uiImage: UIImage(data: saving!.cover!)!) :
+                        Image("piggy-bank")
             
             VStack {
                 HStack {
@@ -46,11 +49,12 @@ struct NowSaving: View {
                     Spacer()
                 }
                 .padding()
-                Image(saving!.imageName)
+                image
                     .resizable()
                     .scaledToFit()
                     .overlay (
-                        LinearGradient(colors: [.white.opacity(1), .white.opacity(status)], startPoint: .top, endPoint: .center)
+                        LinearGradient(colors: [.white.opacity(1), .white.opacity(status)],
+                                       startPoint: .top, endPoint: .center)
                     )
                     .overlay {
                         VStack {
@@ -80,12 +84,5 @@ struct NowSaving: View {
                 .padding()
             }
         }
-    }
-}
-
-    
-#Preview {
-    ModelContainerPreview(ModelContainer.sample) {
-        NowSaving(saving: Saving.travel)
     }
 }

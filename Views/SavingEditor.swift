@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import PhotosUI
 
 struct SavingEditor: View {
     var saving: Saving?
@@ -18,11 +19,17 @@ struct SavingEditor: View {
     @State private var name = ""
     @State private var selectedDate = Date()
     @State private var enteredAmount: Int = 0
+    @State private var selectedPhotos = [PhotosPickerItem]()
+    @State private var selectedPhotosData: Data?
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {
+        let image = saving!.cover != nil ?
+                    Image(uiImage: UIImage(data: saving!.cover!)!) :
+                    Image("piggy-bank")
+        
         NavigationStack {
             Form {
                 HStack {
@@ -45,6 +52,13 @@ struct SavingEditor: View {
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.trailing)
                 }
+                PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 1, matching: .images, photoLibrary: .shared()) {
+                    Label("Select a photo", systemImage: "photo")
+                }
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .listRowInsets(EdgeInsets())
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -74,6 +88,13 @@ struct SavingEditor: View {
                     selectedDate = saving.startDate
                 }
             }
+            .task(id: selectedPhotos) {
+                guard !selectedPhotos.isEmpty else { return }
+                
+                if let data = try? await selectedPhotos[0].loadTransferable(type: Data.self) {
+                    selectedPhotosData = data
+                }
+            }
         }
     }
     
@@ -82,11 +103,16 @@ struct SavingEditor: View {
             saving.name = name
             saving.goal = enteredAmount
             saving.startDate = selectedDate
+            if let selectedPhotosData {
+                saving.cover = selectedPhotosData
+            }
         } else {
-            let newSaving = Saving(name: name, goal: enteredAmount, imageName: "macbook")
+            let newSaving = Saving(name: name, goal: enteredAmount)
             newSaving.startDate = selectedDate
+            if let selectedPhotosData {
+                newSaving.cover = selectedPhotosData
+            }
             modelContext.insert(newSaving)
         }
     }
 }
-

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import PhotosUI
 
 @Model
 final class Saving {
@@ -15,13 +16,14 @@ final class Saving {
     var startDate = Date()
     var isFinished = false
     var finishDate: Date?
-    var imageName: String
     @Relationship(deleteRule: .cascade, inverse: \Record.account)
     var records = [Record]()
     
-    init(name: String, goal: Int, imageName: String) {
+    init(name: String, goal: Int) {
         self.name = name
         self.goal = goal
-        self.imageName = imageName
     }
+
+    @Attribute(.externalStorage)
+    var cover: Data?
 }

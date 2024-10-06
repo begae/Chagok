@@ -69,10 +69,12 @@ private struct SavingDetailContentView: View {
                 Text("\(saving.goal)").bold()
             }
             
-            Image(saving.imageName)
-                .resizable()
-                .scaledToFit()
-                .listRowInsets(EdgeInsets())
+            if saving.cover != nil {
+                Image(uiImage: UIImage(data: saving.cover!)!)
+                    .resizable()
+                    .scaledToFit()
+                    .listRowInsets(EdgeInsets())
+            }
             
             ForEach(saving.records) { record in
                 HStack {
