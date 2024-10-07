@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct NowSaving: View {
-    @ObservedObject var saving: Saving
+    var saving: Saving
     
     @Environment(\.modelContext) private var modelContext
     
@@ -18,7 +18,7 @@ struct NowSaving: View {
     var body: some View {
         
         let current = saving.records.map { $0.amount }.reduce(0, +)
-        let status = 0.8 - (Double(current / saving.goal) * 0.8)
+        let status = 0.8 - Double(current) / Double(saving.goal) * 0.8
         let image = saving.cover != nil ?
                     Image(uiImage: UIImage(data: saving.cover!)!) :
                     Image("piggy-bank")
@@ -36,7 +36,7 @@ struct NowSaving: View {
                 .scaledToFit()
                 .overlay (
                     LinearGradient(colors: [.white.opacity(1), .white.opacity(status)],
-                                   startPoint: .top, endPoint: .bottom)
+                                   startPoint: .top, endPoint: .center)
                 )
                 .overlay {
                     VStack {

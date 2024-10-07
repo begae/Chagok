@@ -10,7 +10,7 @@ import SwiftData
 import PhotosUI
 
 @Model
-final class Saving: ObservableObject {
+final class Saving {
     
     var name: String
     var goal: Int
