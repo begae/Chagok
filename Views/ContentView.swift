@@ -24,12 +24,19 @@ struct ContentView: View {
         let saving: Saving? = savings.first
         
         TabView(selection: $selection) {
-            NowSaving(saving: saving)
-                .tabItem {
-                    Label("Now Saving", systemImage: "square.and.arrow.down")
-                }
-                .tag(Tab.now)
-            
+            if saving == nil {
+                EmptyNow()
+                    .tabItem {
+                        Label("Now Saving", systemImage: "square.and.arrow.down")
+                    }
+                    .tag(Tab.now)
+            } else {
+                NowSaving(saving: saving!)
+                    .tabItem {
+                        Label("Now Saving", systemImage: "square.and.arrow.down")
+                    }
+                    .tag(Tab.now)
+            }
             SavingList(savings: savings)
                 .tabItem {
                     Label("My List", systemImage: "person")

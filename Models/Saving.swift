@@ -10,12 +10,14 @@ import SwiftData
 import PhotosUI
 
 @Model
-final class Saving {
+final class Saving: ObservableObject {
+    
     var name: String
     var goal: Int
     var startDate = Date()
     var isFinished = false
     var finishDate: Date?
+    
     @Relationship(deleteRule: .cascade, inverse: \Record.account)
     var records = [Record]()
     

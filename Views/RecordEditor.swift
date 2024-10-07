@@ -66,6 +66,7 @@ struct RecordEditor: View {
         let amount = isWithdrawal ? -1 * enteredAmount : enteredAmount
         let newRecord = Record(amount: amount, date: selectedDate)
         newRecord.account = saving
+        saving.records.append(newRecord)
         modelContext.insert(newRecord)
     }
 }
