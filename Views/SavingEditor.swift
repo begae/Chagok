@@ -26,7 +26,7 @@ struct SavingEditor: View {
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {
-        let image = saving!.cover != nil ?
+        let image = saving != nil && saving!.cover != nil ?
                     Image(uiImage: UIImage(data: saving!.cover!)!) :
                     Image("piggy-bank")
         
@@ -63,6 +63,7 @@ struct SavingEditor: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text(editorTitle)
+                        .bold()
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {

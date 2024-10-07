@@ -36,7 +36,7 @@ struct NowSaving: View {
             }
         } else {
             let current = saving!.records.map { $0.amount }.reduce(0, +)
-            let status = 0.8 - Double(current / saving!.goal)
+            let status = 0.8 - (Double(current / saving!.goal) * 0.8)
             let image = saving!.cover != nil ?
                         Image(uiImage: UIImage(data: saving!.cover!)!) :
                         Image("piggy-bank")
@@ -54,7 +54,7 @@ struct NowSaving: View {
                     .scaledToFit()
                     .overlay (
                         LinearGradient(colors: [.white.opacity(1), .white.opacity(status)],
-                                       startPoint: .top, endPoint: .center)
+                                       startPoint: .top, endPoint: .bottom)
                     )
                     .overlay {
                         VStack {
@@ -69,19 +69,17 @@ struct NowSaving: View {
                                     .font(.title2)
                             }
                             Spacer()
+                            HStack {
+                                AddRecordButton(isActive: $isRecordEditorPresented)
+                                    .sheet(isPresented: $isRecordEditorPresented) {
+                                        RecordEditor(saving: saving!)
+                                    }
+                                Spacer()
+                            }
                         }
+                        .shadow(color: .white, radius: 15)
                         .padding()
                     }
-                HStack {
-                    AddRecordButton(isActive: $isRecordEditorPresented)
-                        .sheet(isPresented: $isRecordEditorPresented) {
-                            RecordEditor(saving: saving!)
-                        }
-                        .labelStyle(.titleOnly)
-                        .foregroundStyle(.black)
-                        .font(.title2)
-                }
-                .padding()
             }
         }
     }
