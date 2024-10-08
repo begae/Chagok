@@ -10,7 +10,6 @@ import SwiftUI
 
 struct SavingRow: View {
     var saving: Saving
-    var current: Int = 2000
     
     var body: some View {
         let image = saving.cover != nil ?
@@ -20,11 +19,9 @@ struct SavingRow: View {
         ZStack {
             image
                 .resizable()
-                .frame(height: 300)
-                .overlay (
-                    Gradient(colors: [.black.opacity(0.3)])
-                )
-                
+                .frame(width: 300, height: 300)
+                .scaledToFit()
+                .clipShape(.circle)
             VStack {
                 Text("\(saving.records.map { $0.amount }.reduce(0, +))")
                     .bold()
@@ -35,11 +32,8 @@ struct SavingRow: View {
                 }
             }
             .foregroundStyle(.white)
+            .shadow(color: .black, radius: 20)
         }
     }
     
-}
-
-#Preview {
-    SavingRow(saving: Saving(name: "iPad air 13", goal: 1200000))
 }

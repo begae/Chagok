@@ -10,8 +10,10 @@ import SwiftData
 
 struct SavingDetail: View {
     var saving: Saving?
+    
     @State private var isEditing = false
     @State private var isDeleting = false
+    
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {

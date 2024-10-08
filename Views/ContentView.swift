@@ -10,50 +10,43 @@ import SwiftData
 
 struct ContentView: View {
     @State private var selection: Tab = .now
+    
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Saving.startDate, order: .reverse) private var savings: [Saving]
+    
+    @Query(filter: #Predicate<Saving> { saving in
+        saving.isFinished == true
+    }, sort: \Saving.startDate, order: .reverse) private var finished: [Saving]
+    
+    @Query(filter: #Predicate<Saving> { saving in
+        saving.isFinished == false
+    }, sort: \Saving.startDate, order: .reverse) private var ongoing: [Saving]
     
     enum Tab {
         case now
         case list
-        case more
     }
     
     var body: some View {
-        
-        let saving: Saving? = savings.first
-        
+                
         TabView(selection: $selection) {
-            if saving == nil {
+            if ongoing.isEmpty {
                 EmptyNow()
                     .tabItem {
                         Label("Now Saving", systemImage: "square.and.arrow.down")
                     }
                     .tag(Tab.now)
             } else {
-                NowSaving(saving: saving!)
+                NowSaving(savings: ongoing)
                     .tabItem {
                         Label("Now Saving", systemImage: "square.and.arrow.down")
                     }
                     .tag(Tab.now)
             }
-            SavingList(savings: savings)
+            SavingList(savings: finished)
                 .tabItem {
                     Label("My List", systemImage: "person")
                 }
                 .tag(Tab.list)
-            
-            Settings()
-                .tabItem {
-                    Label("More", systemImage: "ellipsis")
-                }
-                .tag(Tab.more)
         }
-    }
-}
-
-#Preview {
-    ModelContainerPreview(ModelContainer.sample) {
-        ContentView()
     }
 }

@@ -26,10 +26,6 @@ struct SavingEditor: View {
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {
-        let image = saving != nil && saving!.cover != nil ?
-                    Image(uiImage: UIImage(data: saving!.cover!)!) :
-                    Image("piggy-bank")
-        
         NavigationStack {
             Form {
                 HStack {
@@ -55,10 +51,18 @@ struct SavingEditor: View {
                 PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 1, matching: .images, photoLibrary: .shared()) {
                     Label("Select a photo", systemImage: "photo")
                 }
-                image
-                    .resizable()
-                    .scaledToFit()
-                    .listRowInsets(EdgeInsets())
+                if saving != nil && saving!.cover != nil {
+                    Image(uiImage: UIImage(data: saving!.cover!)!)
+                        .resizable()
+                        .scaledToFit()
+                        .listRowInsets(EdgeInsets())
+                }
+                if selectedPhotosData != nil {
+                    Image(uiImage: UIImage(data: selectedPhotosData!)!)
+                        .resizable()
+                        .scaledToFit()
+                        .listRowInsets(EdgeInsets())
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {

@@ -22,7 +22,6 @@ struct SavingList: View {
                 } label: {
                     SavingRow(saving: saving)
                 }
-                .listRowInsets(EdgeInsets())
             }
             .sheet(isPresented: $isEditorPresented) {
                 SavingEditor(saving: nil)
@@ -35,6 +34,11 @@ struct SavingList: View {
                     } description: {
                         StartSavingButton(isActive: $isEditorPresented)
                     }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    StartSavingButton(isActive: $isEditorPresented)
                 }
             }
         } detail: {

@@ -68,5 +68,11 @@ struct RecordEditor: View {
         newRecord.account = saving
         saving.records.append(newRecord)
         modelContext.insert(newRecord)
+        
+        let current = saving.records.map { $0.amount }.reduce(0, +)
+        if current >= saving.goal {
+            saving.isFinished = true
+            saving.finishDate = Date()
+        }
     }
 }
