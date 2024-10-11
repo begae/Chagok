@@ -14,12 +14,10 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
     @Query(filter: #Predicate<Saving> { saving in
-        saving.isFinished == true
-    }, sort: \Saving.startDate, order: .reverse) private var finished: [Saving]
-    
-    @Query(filter: #Predicate<Saving> { saving in
         saving.isFinished == false
     }, sort: \Saving.startDate, order: .reverse) private var ongoing: [Saving]
+    
+    @Query(sort: \Saving.startDate, order: .reverse) private var savings: [Saving]
     
     enum Tab {
         case now
@@ -42,7 +40,7 @@ struct ContentView: View {
                     }
                     .tag(Tab.now)
             }
-            SavingList(savings: finished)
+            SavingList(savings: savings)
                 .tabItem {
                     Label("My List", systemImage: "person")
                 }

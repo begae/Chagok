@@ -32,3 +32,16 @@ struct AddRecordButton: View {
         }
     }
 }
+
+struct ShowDetailButton: View {
+    @Binding var isActive: Bool
+    
+    var body: some View {
+        Button {
+            isActive = true
+        } label: {
+            Label("See details", systemImage: "text.page.badge.magnifyingglass")
+                .help("Show details of the saving")
+        }
+    }
+}

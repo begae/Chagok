@@ -11,6 +11,7 @@ struct FeatureCard: View {
     var saving: Saving
     
     @State private var isEditorPresented = false
+    @State private var isDetailPresented = false
 
     var body: some View {
         let current = saving.records.map { $0.amount }.reduce(0, +)
@@ -40,6 +41,15 @@ struct FeatureCard: View {
                             .foregroundStyle(.white)
                     }
                     Spacer()
+                    HStack {
+                        ShowDetailButton(isActive: $isDetailPresented)
+                            .foregroundStyle(.white)
+                            .sheet(isPresented: $isDetailPresented) {
+                                SavingDetail(saving: saving)
+                            }
+                        Spacer()
+                    }
+                    .padding(.bottom, 5)
                     HStack {
                         AddRecordButton(isActive: $isEditorPresented)
                             .foregroundStyle(.white)
