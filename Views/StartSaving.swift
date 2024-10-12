@@ -1,16 +1,16 @@
 //
-//  SavingEditor.swift
+//  StartSaving.swift
 //  Chagok
 //
-//  Created by 김세령 on 9/27/24.
+//  Created by 김세령 on 10/12/24.
 //
 
 import SwiftUI
 import SwiftData
 import PhotosUI
 
-struct SavingEditor: View {
-    var saving: Saving
+struct StartSaving: View {
+    var savings: [Saving]
         
     @State private var name = ""
     @State private var selectedDate = Date()
@@ -47,12 +47,6 @@ struct SavingEditor: View {
                 PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 1, matching: .images, photoLibrary: .shared()) {
                     Label("Select a photo", systemImage: "photo")
                 }
-                if saving.cover != nil {
-                    Image(uiImage: UIImage(data: saving.cover!)!)
-                        .resizable()
-                        .scaledToFit()
-                        .listRowInsets(EdgeInsets())
-                }
                 if selectedPhotosData != nil {
                     Image(uiImage: UIImage(data: selectedPhotosData!)!)
                         .resizable()
@@ -62,7 +56,7 @@ struct SavingEditor: View {
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Edit Saving Detail")
+                    Text("Start New Saving")
                         .bold()
                 }
                 
@@ -82,11 +76,6 @@ struct SavingEditor: View {
                     }
                 }
             }
-            .onAppear {
-                name = saving.name
-                enteredAmount = saving.goal
-                selectedDate = saving.startDate
-            }
             .task(id: selectedPhotos) {
                 guard !selectedPhotos.isEmpty else { return }
                 
@@ -98,11 +87,11 @@ struct SavingEditor: View {
     }
     
     private func save() {
-        saving.name = name
-        saving.goal = enteredAmount
-        saving.startDate = selectedDate
+        let newSaving = Saving(name: name, goal: enteredAmount)
+        newSaving.startDate = selectedDate
         if let selectedPhotosData {
-            saving.cover = selectedPhotosData
+            newSaving.cover = selectedPhotosData
         }
+        modelContext.insert(newSaving)
     }
 }

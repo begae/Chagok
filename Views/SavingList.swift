@@ -9,12 +9,12 @@ import SwiftUI
 import SwiftData
 
 struct SavingList: View {
-    @Environment(\.modelContext) private var modelContext
-    @State private var isEditorPresented = false
     var savings: [Saving]
     
+    @Environment(\.modelContext) private var modelContext
+    @State private var isEditorPresented = false
+    
     var body: some View {
-        
         NavigationSplitView {
             List(savings) { saving in
                 NavigationLink {
@@ -24,7 +24,7 @@ struct SavingList: View {
                 }
             }
             .sheet(isPresented: $isEditorPresented) {
-                SavingEditor(saving: nil)
+                StartSaving(savings: savings)
             }
             .navigationTitle("My Savings")
             .overlay {
@@ -34,11 +34,6 @@ struct SavingList: View {
                     } description: {
                         StartSavingButton(isActive: $isEditorPresented)
                     }
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    StartSavingButton(isActive: $isEditorPresented)
                 }
             }
         } detail: {

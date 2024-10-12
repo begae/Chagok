@@ -22,29 +22,27 @@ struct ContentView: View {
     enum Tab {
         case now
         case list
+        case settings
     }
     
     var body: some View {
                 
         TabView(selection: $selection) {
-            if ongoing.isEmpty {
-                EmptyNow()
-                    .tabItem {
-                        Label("Now Saving", systemImage: "square.and.arrow.down")
-                    }
-                    .tag(Tab.now)
-            } else {
-                NowSaving(savings: ongoing)
-                    .tabItem {
-                        Label("Now Saving", systemImage: "square.and.arrow.down")
-                    }
-                    .tag(Tab.now)
-            }
+            NowSaving(savings: ongoing)
+                .tabItem {
+                    Label("Now Saving", systemImage: "square.and.arrow.down")
+                }
+                .tag(Tab.now)
             SavingList(savings: savings)
                 .tabItem {
                     Label("My List", systemImage: "person")
                 }
                 .tag(Tab.list)
+            Settings()
+                .tabItem {
+                    Label("Settings", systemImage: "gearshape")
+                }
+                .tag(Tab.settings)
         }
     }
 }
